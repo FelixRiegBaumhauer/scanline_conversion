@@ -126,7 +126,7 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	}
       }
 
-      printf("\nTHE POINTS: \n top: (%d, %d), mid: (%d, %d), bot: (%d, %d)\n",
+      printf("\nTHE POINTS: \ntop: (%d, %d), mid: (%d, %d), bot: (%d, %d)\n",
 	     tx,ty,mx,my,bx,by);
 
       double x0_inc;
@@ -157,7 +157,7 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	x2_inc = ((float)(tx-mx))/((float)(ty-my));
       }
 	  
-      printf("inc0: %f, inc1: %f, inc2: %f\n", x0_inc, x1_inc, x2_inc);
+      //printf("inc0: %f, inc1: %f, inc2: %f\n", x0_inc, x1_inc, x2_inc);
       
       double x_pos0 = bx;
       double x_pos1 = bx;
@@ -172,17 +172,47 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
       c.blue = ((MAX_COLOR * (point*23)) % 256);
       
       for(y_pos=by; y_pos <= ty; y_pos+=y_inc){
+	/*
 	if(y_pos == my+1){
 	  x1_inc = x2_inc;
 	  printf("THE xinc's were switched \n");
 	  printf("x1inc: %f, x2inc: %f \n", x1_inc, x2_inc);
 	  //set x1 to x2
-	}
-	draw_line( x_pos0, y_pos, x_pos1, y_pos, s, c);
+	  }*/
 
-	printf("x_pos0: %f, x_pos1: %f, ypos: %d \n", x_pos0, x_pos1, y_pos);
-	x_pos0 += x0_inc;
-	x_pos1 += x1_inc;
+	if(my != by){
+	  if(y_pos == my){
+	    x1_inc = x2_inc;
+	    printf("THE xinc's were switched \n");
+	    printf("x1inc: %f, x2inc: %f \n", x1_inc, x2_inc);
+	    //set x1 to x2
+	  }
+	  
+	  draw_line( x_pos0, y_pos, x_pos1, y_pos, s, c);
+	  //printf("Drew Line: x1: %f, y1: %d, x2: %f, y2: %d\n", x_pos0, y_pos, x_pos1, y_pos);
+
+	  //printf("x_pos0: %f, x_pos1: %f, ypos: %d \n", x_pos0, x_pos1, y_pos);
+	  x_pos0 += x0_inc;
+	  x_pos1 += x1_inc;
+	}
+	else{
+	  //printf("x_pos0: %f, x_pos1: %f, ypos: %d \n", x_pos0, x_pos1, y_pos);
+	  x_pos0 += x0_inc;
+	  x_pos1 += x1_inc;
+
+	  draw_line( x_pos0, y_pos, x_pos1, y_pos, s, c);
+	  //printf("Drew Line: x1: %f, y1: %d, x2: %f, y2: %d\n", x_pos0, y_pos, x_pos1, y_pos);
+
+	  if(y_pos == my){
+	    x1_inc = x2_inc;
+	    printf("THE xinc's were switched \n");
+	    printf("x1inc: %f, x2inc: %f \n", x1_inc, x2_inc);
+	    //set x1 to x2
+	  }
+	}
+
+
+	
       }
       c.red = 0;
       c.green = 0;
