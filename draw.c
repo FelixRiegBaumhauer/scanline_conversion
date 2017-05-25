@@ -59,6 +59,8 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
     if ( normal[2] > 0 ) {
 
 
+      //THIS IS WHERE MY WORK STARTS FROM
+      
       //find B, T, M
       int bx, tx, mx;
       int by, ty, my;
@@ -124,7 +126,7 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	}
       }
 
-      printf("THE POINTS: \n top: (%d, %d), mid: (%d, %d), bot: (%d, %d)\n",
+      printf("\nTHE POINTS: \n top: (%d, %d), mid: (%d, %d), bot: (%d, %d)\n",
 	     tx,ty,mx,my,bx,by);
 
       double x0_inc;
@@ -141,7 +143,7 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 
       //x1
       if (my-by == 0){
-	x1_inc = 0;
+	x1_inc = mx-bx;
       }
       else{
 	x1_inc = ((float)(mx-bx))/((float)(my-by));
@@ -155,6 +157,7 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	x2_inc = ((float)(tx-mx))/((float)(ty-my));
       }
 	  
+      printf("inc0: %f, inc1: %f, inc2: %f\n", x0_inc, x1_inc, x2_inc);
       
       double x_pos0 = bx;
       double x_pos1 = bx;
@@ -162,17 +165,22 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
       int y_inc = 1;
       int y_pos = by;
 
-      c.red = 0;
-      c.green = MAX_COLOR;
-      c.blue = 0;
+      
+      
+      c.red = ((MAX_COLOR * (point*53)) % 256);
+      c.green = ((MAX_COLOR * (point*43)) % 256);
+      c.blue = ((MAX_COLOR * (point*23)) % 256);
       
       for(y_pos=by; y_pos <= ty; y_pos+=y_inc){
-	if(y_pos >= mx){
-	  x1_inc=x2_inc;
+	if(y_pos == my+1){
+	  x1_inc = x2_inc;
+	  printf("THE xinc's were switched \n");
+	  printf("x1inc: %f, x2inc: %f \n", x1_inc, x2_inc);
 	  //set x1 to x2
 	}
 	draw_line( x_pos0, y_pos, x_pos1, y_pos, s, c);
 
+	printf("x_pos0: %f, x_pos1: %f, ypos: %d \n", x_pos0, x_pos1, y_pos);
 	x_pos0 += x0_inc;
 	x_pos1 += x1_inc;
       }
